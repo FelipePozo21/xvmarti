@@ -1,0 +1,630 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN GLOBAL (MANTENIDA AL 100%)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #fafafa;
+    color: #333;
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3 {
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.bloque {
+    width: 100%;
+    padding: 80px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   2. PORTADA (REDISEÑO RESPONSIVE AUTOMÁTICO CON PICTURE)
+   ========================================================================== */
+.portada {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #f1f1f1; 
+}
+
+.imagen-picture-responsiva {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+}
+
+.imagen-responsive-interna {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover; 
+    object-position: center center; 
+}
+.portada::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.01); 
+    z-index: 2; 
+}
+
+.control-musica {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 10; 
+    background: rgba(255, 255, 255, 0.7);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease;
+}
+
+.control-musica:hover { transform: scale(1.1); }
+.control-musica img { width: 20px; height: 20px; }
+
+.presentacion {
+    position: relative;
+    margin-top: -1px !important; 
+    padding: 80px 20px !important; 
+    background-color: #F1F1F1 !important; 
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(143, 169, 137, 0.3) 0%, transparent 60%), 
+        radial-gradient(at 100% 100%, rgba(227, 198, 193, 0.4) 0%, transparent 60%) !important;
+    background-size: 150% 150% !important;
+    animation: moverAcuarela 15s ease infinite alternate !important;
+}
+
+.presentacion .titulo-seccion {
+    color: #6b7a67 !important;
+    font-family: 'Playfair Display', serif !important;
+    font-size: clamp(2.5rem, 8vw, 3.8rem) !important;
+    font-style: italic;
+    font-weight: 700 !important;
+    margin-bottom: 20px !important;
+    letter-spacing: 5px;
+    background: linear-gradient(90deg, #6b7a67, #b88a83, #4A5D45, #6b7a67);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: colorTexto 8s linear infinite !important;
+}
+
+.presentacion .texto-principal {
+    color: #333333 !important;
+    font-size: 1.2rem !important;
+    max-width: 600px !important;
+    line-height: 1.8 !important;
+    font-weight: 300;
+}
+
+/* ==========================================================================
+   3. CUENTA REGRESIVA (ARREGLO ANTI-WRAP)
+   ========================================================================== */
+.cuenta-regresiva {
+    position: relative;
+    padding: 80px 10px !important;
+    overflow: hidden;
+    background-color: #F6F1EF !important; 
+    background-image: 
+        radial-gradient(at 10% 10%, rgba(227, 198, 193, 0.25) 0%, transparent 85%), 
+        radial-gradient(at 90% 90%, rgba(227, 198, 193, 0.25) 0%, transparent 85%),
+        radial-gradient(at 50% 50%, rgba(227, 198, 193, 0.15) 0%, transparent 90%),
+        linear-gradient(to bottom, transparent 90%, #f4f4f4 100%) !important;
+    background-size: 140% 140% !important;
+    animation: fluirAcuarelaTenue 25s ease-in-out infinite alternate !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1; 
+}
+
+.contador-contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Reducido para evitar choques en pantallas mini */
+    width: 100%;
+    max-width: 500px; /* Reducido el max-width para compactar */
+    z-index: 5;
+    flex-wrap: nowrap !important; /* PROHIBIDO que se bajen los segundos */
+}
+
+.caja-tiempo {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 10px 2px;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 0; /* Permite que la caja se encoja si es necesario */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(2px);
+    text-align: center;
+}
+
+.caja-tiempo span {
+    font-family: 'Playfair Display', serif;
+    /* Usamos clamp con un valor mínimo más agresivo para que no rompa */
+    font-size: clamp(1.4rem, 4.5vw, 3.5rem); 
+    font-weight: 600;
+    color: #4A5D45 !important;
+    line-height: 1;
+    display: block;
+}
+
+.caja-tiempo p {
+    font-size: clamp(0.55rem, 1.8vw, 0.8rem);
+    text-transform: uppercase;
+    color: #8FA989 !important;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+.separador {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 600;
+    color: #4A5D45;
+    margin-top: -10px;
+}
+
+/* ==========================================================================
+   4. FIESTA (MANTENIDO: H2 Y BOTÓN CHICOS)
+   ========================================================================== */
+.fiesta {
+    background-color: #ffffff !important;
+    padding: 100px 20px !important;
+}
+
+.fiesta .titulo-seccion {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 6vw, 2.5rem); 
+    color: #4A5D45;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+.fiesta .texto-info {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto 25px;
+}
+
+.fiesta .texto-info strong {
+    color: #b88a83;
+    font-weight: 600;
+    font-size: 1.3rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.fiesta .btn-principal {
+    display: inline-block;
+    padding: 12px 35px; 
+    background-color: #6b7a67;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 50px;
+    margin-top: 20px;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 15px rgba(107, 122, 103, 0.2);
+    border: none;
+}
+
+.fiesta .btn-principal:hover {
+    background-color: #4A5D45;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(107, 122, 103, 0.4);
+}
+
+.fiesta::after {
+    content: "";
+    width: 100%;
+    max-width: 550px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(184, 138, 131, 0.3), transparent);
+    display: block;
+    margin: 50px auto 0;
+}
+
+/* ==========================================================================
+   5. EXTRAS
+   ========================================================================== */
+.extras {
+    background-color: #F1F1F1 !important;
+    padding: 100px 20px !important;
+    gap: 40px !important;
+}
+
+.item-extra {
+    background: #ffffff;
+    border: 1px solid rgba(143, 169, 137, 0.15);
+    padding: 50px 30px;
+    border-radius: 35px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease;
+}
+
+.dress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Las tarjetas de Mujeres y Hombres */
+.dress-section {
+    background: #fdfdfd; 
+    padding: 25px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 350px;
+    border: 1px solid rgba(107, 122, 103, 0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+.dress-title {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #b88a83; /* Color rosa viejo para resaltar */
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.dress-section p {
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+}
+
+.item-extra:hover { transform: translateY(-5px); }
+
+.item-extra .titulo-seccion {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: #4A5D45;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+.item-extra .texto-info {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.item-extra .btn-principal {
+    display: inline-block;
+    padding: 14px 40px;
+    background-color: transparent;
+    color: #6b7a67 !important;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: 2px solid #6b7a67;
+    border-radius: 50px;
+    transition: all 0.4s ease;
+}
+
+.card-precios {
+    padding: 30px 15px !important;
+}
+
+.lista-precios {
+    list-style: none; /* Quitamos los círculos */
+    padding: 0;
+    margin: 20px 0 0 0;
+    width: 100%;
+}
+
+.item-extra ul {
+  /* Quita los puntos negros */
+  list-style-type: none;
+  /* Elimina el padding por defecto para alinear a la izquierda */
+  padding-left: 0;
+  margin-top: 15px; /* Espacio sutil arriba de la lista */
+}
+
+.item-extra li {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  color: #333333;
+  line-height: 1.6;
+  margin-bottom: 8px; /* Espacio entre ítems */
+}
+
+/* Estilo para los precios */
+.item-extra li span {
+  font-weight: 600; /* Hace el precio más negrita */
+  color: #6b7a67; /* Color verde del diseño */
+}
+
+.lista-precios li {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: #555;
+    padding: 15px 0;
+    border-bottom: 1px dashed rgba(107, 122, 103, 0.2);
+    /* Alineación: Texto izquierda, Precio derecha */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+}
+
+.lista-precios li:last-child {
+    border-bottom: none;
+}
+
+/* El texto aclaratorio debajo de Niños */
+.lista-precios li small {
+    display: block;
+    font-size: 0.7rem;
+    color: #888;
+    font-style: italic;
+    line-height: 1.2;
+}
+
+.precio {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #4A5D45;
+    font-size: 1.1rem;
+    /* Agregamos el signo $ adelante mediante CSS */
+}
+
+.precio::before {
+    content: "$";
+    margin-right: 2px;
+}
+
+.item-extra .btn-principal:hover {
+    background-color: #6b7a67;
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   6. GALERÍA (REDISEÑO: ENTRADA ESCALONADA)
+   ========================================================================== */
+.galeria {
+    padding: 80px 20px !important;
+    background-color: #F6F1EF !important;
+    margin-bottom: -40px;
+}
+
+.grid-fotos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 25px; 
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.grid-fotos img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+    opacity: 0;
+    animation: aparecerFade 0.8s ease-out forwards;
+}
+
+.grid-fotos img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 15px 30px rgba(107, 122, 103, 0.3);
+}
+
+.grid-fotos img:nth-child(1), .grid-fotos img:nth-child(2), .grid-fotos img:nth-child(3) { animation-delay: 0.2s; }
+.grid-fotos img:nth-child(4), .grid-fotos img:nth-child(5), .grid-fotos img:nth-child(6) { animation-delay: 0.4s; }
+
+/* ==========================================================================
+   7. ASISTENCIA
+   ========================================================================== */
+.asistencia {
+    background-color: #ffffff !important;
+    padding: 100px 20px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.asistencia-card {
+    background: #ffffff;
+    border: 1px solid rgba(143, 169, 137, 0.2);
+    padding: 50px 30px;
+    border-radius: 35px;
+    max-width: 550px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+}
+
+.asistencia .titulo-seccion {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 6vw, 2.4rem); 
+    color: #4A5D45;
+    margin-bottom: 20px;
+    letter-spacing: 4px;
+    font-style: italic;
+}
+
+.asistencia .texto-info {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.asistencia .btn-principal {
+    display: inline-block;
+    padding: 14px 20px; 
+    width: 100%; /* En móvil ocupa el ancho disponible del card */
+    max-width: 300px; /* EVITA QUE SE VEA ENORME EN DESKTOP */
+    background-color: #4A5D45; 
+    color: #ffffff !important;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 50px;
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 20px rgba(74, 93, 69, 0.2);
+    border: none;
+    cursor: pointer;
+}
+
+.asistencia .btn-principal:hover {
+    background-color: #6b7a67;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(74, 93, 69, 0.3);
+}
+
+/* ==========================================================================
+   8. PIE DE PÁGINA
+   ========================================================================== */
+.pie-pagina {
+    background-color: #F1F1F1 !important;
+    background-image: linear-gradient(to bottom, #ffffff, #F1F1F1) !important;
+    padding: 60px 20px !important;
+    border-top: 1px solid rgba(107, 122, 103, 0.1);
+}
+
+.texto-agradecimiento {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: #6b7a67;
+    max-width: 80%;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   9. ANIMACIONES Y RESPONSIVE
+   ========================================================================== */
+@keyframes fluirAcuarelaTenue {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 20% 10%; }
+}
+
+@keyframes moverAcuarela {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+@keyframes colorTexto {
+    to { background-position: 200% center; }
+}
+
+@keyframes aparecerFade {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    /* Contador móvil: Garantizamos NO WRAP */
+    .contador-contenedor { 
+        gap: 4px; 
+        flex-wrap: nowrap !important; 
+        padding: 0 5px;
+    }
+
+    .lista-precios {
+        max-width: 500px; /* Evitamos que se estire demasiado a lo ancho */
+        margin: 30px auto 0;
+    }
+
+    .lista-precios li {
+        font-size: 1.1rem;
+        padding: 20px 0;
+    }
+
+    .precio {
+        font-size: 1.3rem;
+    }
+
+    .dress-container {
+        flex-direction: row; /* Los pone uno al lado del otro */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .dress-container .titulo-seccion {
+        width: 100%; /* El título principal se queda arriba solo */
+        margin-bottom: 20px;
+    }
+
+    .dress-section {
+        flex: 1;
+        min-height: 120px;
+    }
+    
+    .caja-tiempo { padding: 8px 2px; }
+    
+    .caja-tiempo span { font-size: 1.5rem; } /* Forzamos un tamaño que quepa en 320px */
+    
+    .presentacion .titulo-seccion { font-size: 2.2rem !important; }
+    
+    /* Galería Móvil */
+    .grid-fotos { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .grid-fotos img:nth-child(n) { animation-delay: 0s; }
+    .grid-fotos img:nth-child(1), .grid-fotos img:nth-child(2) { animation-delay: 0.2s; }
+    .grid-fotos img:nth-child(3), .grid-fotos img:nth-child(4) { animation-delay: 0.4s; }
+    .grid-fotos img:nth-child(5), .grid-fotos img:nth-child(6) { animation-delay: 0.6s; }
+
+    .asistencia .btn-principal { max-width: 400px !important; padding: 15px 20px; width: 85% !important; }
+    .fiesta .titulo-seccion { font-size: 1.8rem; }
+    
+    .pie-pagina { padding: 40px 15px !important; }
+    .texto-agradecimiento { font-size: 1.1rem; }
+}
